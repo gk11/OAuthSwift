@@ -100,7 +100,7 @@ open class OAuth1Swift: OAuthSwift {
                 var urlString = self.authorizeUrl + (self.authorizeUrl.contains("?") ? "&" : "?")
                 urlString += "oauth_token=\(token)"
                 if self.addCallbackURLToAuthorizeURL {
-                    urlString += "&oauth_callback=\(callbackURL.absoluteString)"
+                    urlString += "&callback=\(callbackURL.absoluteString)" // MORE-12: Change param name to "callback"
                 }
                 if let queryURL = URL(string: urlString) {
                     self.authorizeURLHandler.handle(queryURL)
@@ -128,7 +128,7 @@ open class OAuth1Swift: OAuthSwift {
     // 1. Request token
     func postOAuthRequestToken(callbackURL: URL, success: @escaping TokenSuccessHandler, failure: FailureHandler?) {
         var parameters = [String: Any]()
-        parameters["oauth_callback"] = callbackURL.absoluteString
+        parameters["callback"] = callbackURL.absoluteString   //MORE-12: Change param name to: "callback"
 
         if let handle = self.client.post(
             self.requestTokenUrl, parameters: parameters,
